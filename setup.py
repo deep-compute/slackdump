@@ -1,9 +1,8 @@
-import os
-
 from setuptools import setup, find_packages
 
-version = '0.1.0'
+import os
 
+version = '0.1.0'
 setup(
     name = "slack_dump",
     version = version,
@@ -15,7 +14,6 @@ setup(
         'slackclient',
         'basescript',
     ],
-
     package_dir = {'slack_dump' : 'slack_dump'},
     packages = find_packages('.'),
     include_package_data = True,
@@ -25,7 +23,6 @@ setup(
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
     ],
-
     entry_points = {
         "console_scripts": [
             "slack_dump = slack_dump:main",
