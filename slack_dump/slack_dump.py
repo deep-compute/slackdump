@@ -30,7 +30,7 @@ def get_real_time_message(token, start1):
             time.sleep(CONNECTION_SLEEP_INTERVAL)
         end = format(time.time(), '0.6f')
 
-        slack_history.initialise(token,start1,end)
+        slack_history.get_all_channels_history(token,start1,end)
 
         while True:
             msg = slack.rtm_read()
@@ -44,13 +44,13 @@ def get_real_time_message(token, start1):
                     key = hashlib.sha1(msg[0]['channel'] + msg[0]['ts']).hexdigest()
 		    msg[0]["key"] = key
 		    res=db.slack_db.insert_one(msg[0])
-		    print "Inserted!!"
+		    print ("Inserted!!")
 
 		except Exception:
                     continue
 
     except Exception as e:
-        print e
+        print (e)
 	start1 = format(time.time(), '0.6f')
-	print "Connection failed at : "+str(start1)
+	print ("Connection failed at : "+str(start1))
 	get_real_time_message(token,start1)

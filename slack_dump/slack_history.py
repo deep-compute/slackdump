@@ -8,7 +8,7 @@ client = MongoClient()
 db = client.slack_db
 collection = db.slack_db
 
-def initialise(auth_token, start_time, end_time):
+def get_all_channels_history(auth_token, start_time, end_time):
     slack = Slacker(auth_token)
     get_public_channels_history(slack, start_time, end_time)
     get_private_channels_history(slack, start_time, end_time)
@@ -48,4 +48,4 @@ def get_direct_channels_history(slack, start_time, end_time):
                 key = hashlib.sha1(every_message['channel'] + every_message['ts']).hexdigest()
                 every_message["key"] = key
                 db.slack_db.insert_one(every_message)
-            print "Inserted all Direct Channel data"
+            print ("Inserted all Direct Channel data")
