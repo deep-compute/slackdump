@@ -44,11 +44,10 @@ def get_real_time_message(token, start1):
 		    msg[0]["key"] = key
 		    res=db.slack_db.insert_one(msg[0])
 		    print "Inserted!!"
-		            except Exception:
+		except Exception:
                     continue
-
     except Exception as ex:
         print ex
         start1 = format(time.time(), '0.6f')
-	      print "Connection failed at : "+str(start1)
-	      get_real_time_message(token,start1)
+	print "Connection failed at : "+str(start1)
+	get_real_time_message(token,start1)
