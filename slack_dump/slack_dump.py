@@ -36,7 +36,7 @@ def get_real_time_message(token, start1):
             if not msg:
                 time.sleep(EMPTY_READ_SLEEP_INTERVAL)
                 continue
-	    print (msg)
+	    print msg
 
             if not len(msg[0]) == 1:
                 try:
@@ -47,8 +47,8 @@ def get_real_time_message(token, start1):
 		except Exception:
                     continue
 
-    except Exception as e:
-        print e
+    except Exception as ex:
+        print ex
 	start1 = format(time.time(), '0.6f')
 	print "Connection failed at : "+str(start1)
 	get_real_time_message(token,start1)
