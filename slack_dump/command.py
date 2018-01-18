@@ -1,4 +1,5 @@
 import slack_dump
+
 from basescript import BaseScript
 
 class Slack_Command(BaseScript):
