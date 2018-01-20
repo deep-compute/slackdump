@@ -15,21 +15,16 @@ EMPTY_READ_SLEEP_INTERVAL = .1
 
 def initialise(auth_token):
     token = auth_token
-    if collection.count() == 0:
-        start1 = 0
-    else:
-        res = db.slack_db.find().sort('ts',pymongo.DESCENDING).limit(1)
-	for r in res:
-            start1 = r['ts']
-    get_real_time_message(token, start1)
+    get_real_time_message(token)
 
-def get_real_time_message(token, start1):
+def get_real_time_message(token):
     try:
         slack = SlackClient(token)
         while not slack.rtm_connect():
             time.sleep(CONNECTION_SLEEP_INTERVAL)
+
         end = format(time.time(), '0.6f')
-        slack_history.get_all_channels_history(token,start1,end)
+        slack_history.get_all_channels_history(token, end)
 
         while True:
             msg = slack.rtm_read()
@@ -48,6 +43,4 @@ def get_real_time_message(token, start1):
                     continue
     except Exception as ex:
         print ex
-        start1 = format(time.time(), '0.6f')
-	print "Connection failed at : "+str(start1)
-	get_real_time_message(token,start1)
+	get_real_time_message(token)
