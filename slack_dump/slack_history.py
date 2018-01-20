@@ -9,13 +9,11 @@ client = MongoClient()
 db = client.slack_db
 collection = db.slack_db
 
-
 def get_all_channels_history(auth_token, connect_time):
     slack = Slacker(auth_token)
     get_public_channels_history(slack, connect_time)
     get_private_channels_history(slack, connect_time)
     get_direct_channels_history(slack, connect_time)
-
 
 def getHistory(pageableObject, channelId, end_time, start_time=0):
     messages = []
@@ -38,7 +36,6 @@ def getHistory(pageableObject, channelId, end_time, start_time=0):
         else:
             break
 
-
 def get_public_channels_history(slack, connect_time):
     public_channels = slack.channels.list().body['channels']
     for every_channel in public_channels:
@@ -58,7 +55,6 @@ def get_public_channels_history(slack, connect_time):
                        every_channel['id'], connect_time, temp2)
         print "Inserted Public channel data"
 
-
 def get_private_channels_history(slack, connect_time):
     private_channels = slack.groups.list().body['groups']
     for every_channel in private_channels:
@@ -76,7 +72,6 @@ def get_private_channels_history(slack, connect_time):
         if (temp2) != connect_time:
             getHistory(slack.groups, every_channel['id'], connect_time, temp2)
         print "Inserted Private channel data"
-
 
 def get_direct_channels_history(slack, connect_time):
     direct_channels = slack.im.list().body['ims']
