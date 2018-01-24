@@ -4,9 +4,7 @@ import hashlib
 from slacker import Slacker
 from pymongo import MongoClient, ASCENDING, DESCENDING
 
-
 class SlackHistory(object):
-
     def __init__(self, auth_token = 0, connect_time = time.time()):
         self.client = MongoClient()
         self.db = self.client.slackdb
@@ -39,7 +37,6 @@ class SlackHistory(object):
                                             count = 100).body
 
             messages.extend(response['messages'])
-
             for message in messages:
                 message['channel'] = channel_id
                 key = self.get_key(message)
@@ -57,8 +54,7 @@ class SlackHistory(object):
         return self.slack.channels.list().body['channels']
 
     def get_public_channels_history(self):
-        public_channels = self.get_public_channels()
-        
+        public_channels = self.get_public_channels()        
         for channel in public_channels:
             last_db_time = last_time = self.connect_time
             last_db_time = [one_record['ts'] for one_record in self._collection.find(
@@ -77,8 +73,7 @@ class SlackHistory(object):
         return self.slack.groups.list().body['groups']
 
     def get_private_channels_history(self):
-        private_channels = self.get_private_channels()
-        
+        private_channels = self.get_private_channels()        
         for channel in private_channels:
             last_db_time = last_time = self.connect_time
             last_db_time = [one_record['ts'] for one_record in self._collection.find(
@@ -98,7 +93,6 @@ class SlackHistory(object):
 
     def get_direct_channels_history(self):
         direct_channels = self.get_direct_channels()
-
         for counter in range(0, len(direct_channels)):
             last_db_time = last_time = self.connect_time
             last_db_time = [one_record['ts'] for one_record in self._collection.find(
