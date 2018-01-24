@@ -1,29 +1,29 @@
-import os
 from setuptools import setup, find_packages
+
 version = '0.1.0'
 setup(
-    name = "slack_dump",
-    version = version,
-    description = "A tool to get slack dump and store in mongodb",
-    keywords = "slack_dump",
-    install_requires = [
-        'slacker',
-        'pymongo',
-        'slackclient',
+    name="slackdump",
+    version=version,
+    description="A tool to get the data from slack and store it in mongodb",
+    keywords="slackdump",
+    install_requires=[
+        'slacker == 0.9.60',
+        'pymongo == 3.6.0',
+        'slackclient == 1.1.0',
         'basescript',
     ],
-    package_dir = {'slack_dump' : 'slack_dump'},
-    packages = find_packages('.'),
-    include_package_data = True,
-    classifiers = [
+    package_dir={'slackdump': 'slackdump'},
+    packages=find_packages('.'),
+    include_package_data=True,
+    classifiers=[
         "Programming Language :: Python :: 2.7",
         "Environment :: Console",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
     ],
-    entry_points = {
+    entry_points={
         "console_scripts": [
-            "slack_dump = slack_dump:main",
+            "slackdump = slackdump:main",
         ]
     }
 )
