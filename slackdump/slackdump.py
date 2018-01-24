@@ -9,7 +9,6 @@ from .slackhistory import SlackHistory
 CONNECTION_SLEEP_INTERVAL = 1
 EMPTY_READ_SLEEP_INTERVAL = .1
 
-
 class SlackDump(object):
     def __init__(self, auth_token):
         self.auth_token = auth_token
@@ -34,29 +33,24 @@ class SlackDump(object):
     def real_time_message(self):
         while True:
             msg = self.slack.rtm_read()
-
             if not msg:
                 time.sleep(EMPTY_READ_SLEEP_INTERVAL)
                 continue
             print(msg)
 
             if not len(msg[0]) == 1:
-
                 try:
                     key = SlackHistory().get_key(msg[0])
                     msg[0]["key"] = key
                     SlackHistory().insert_into_db(msg[0])
-
                 except Exception:
                     continue
 
     def start(self):
         try:
             p = self.make_connection()
-
             if p is True:
                 self.get_history(time.time())
                 self.real_time_message()
-
         except Exception:
             self.start()
