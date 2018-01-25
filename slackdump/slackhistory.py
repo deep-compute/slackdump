@@ -5,7 +5,7 @@ from slacker import Slacker
 from pymongo import MongoClient, ASCENDING, DESCENDING
 
 class SlackHistory(object):
-    def __init__(self, auth_token = 0, connect_time = time.time()):
+    def __init__(self, auth_token=0, connect_time=time.time()):
         self.client = MongoClient()
         self.db = self.client.slackdb
         self.connect_time = connect_time
@@ -34,7 +34,7 @@ class SlackHistory(object):
         while True:
             response = slack_object.history(channel_id,
                                             last_time_stamp, oldest_time_stamp,
-                                            count = 100).body
+                                            count=100).body
 
             messages.extend(response['messages'])
             for message in messages:
