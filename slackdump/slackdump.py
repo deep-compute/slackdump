@@ -21,7 +21,6 @@ class SlackDump(object):
             while not self.slack.rtm_connect():
                 time.sleep(CONNECTION_SLEEP_INTERVAL)
             return True
-
         except Exception as ex:
             return ex
 
