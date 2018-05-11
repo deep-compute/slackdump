@@ -4,7 +4,7 @@ python:
 install:
 - pip install .
 script:
-- echo "No tests"
+- python setup.py test
 deploy:
 - provider: releases
   skip_cleanup: true
