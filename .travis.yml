@@ -5,50 +5,21 @@ install:
 - pip install .
 script:
 - echo "No tests"
-before_deploy:
-- wget https://github.com/jgm/pandoc/releases/download/1.19.1/pandoc-1.19.1-1-amd64.deb
-  -O $TRAVIS_BUILD_DIR/pandoc.deb
-- sudo dpkg -i $TRAVIS_BUILD_DIR/pandoc.deb
-- rm $TRAVIS_BUILD_DIR/pandoc.deb
-- pandoc --from=markdown --to=rst --output=$TRAVIS_BUILD_DIR/README.rst README.md
 deploy:
 - provider: releases
   skip_cleanup: true
   api_key:
-    secure: 
-  file:
-    - LICENSE
-    - README.md
-    - setup.py
-    - slackdump/slackdump.py
-    - slackdump/slackhistory.py
-    - slackdump/messagestore.py
-    - slackdump/patchedrequests.py
-    - slackdump/__init__.py
-    - slackdump/util.py
-    - slackdump/command.py
+    secure: EyfcBUGiRqYA9kdRPz0I0q/oBpnzp0af9NdJFmyO20PJtiUgkJie+i9wGIxJReb6xF8a6togsl33GpbVzgusvtGV8mV1x6fq6qj1V0PImc8+Nt9L+NTAQLnB2+3qqNe3nguJxsFkPs/Gh4NQGCBgTsHo5q0H4nLMx8tby87Ym20sKee2h1a/n8FpgEoEQNJcZqq4dxmhVCSEh2lKUMvrMl8N06w/ucy0eADlh8M9JYiZhh8rKuY/SNPinCYCLKJ6EEJlJ4L8ZI+cc4SYFVJu93yRCpXNUjddIBV9qlHPv67xyu3cYFIAlPzoFmBnCnLOla1FgaSlV/wiOMzJSP+k0OdS+iXtT8Jj70bzf3FPCAV8+YzqvxW4kwzNPFmvyM0qijxuksz17ZgZgU5C3UnMSRXFxLoQAE2DTlWUHXWQJ3MgafT09DpDEetH5g9LGAYErqJuWobeDzqSkCLgiNWNVzyHZHKHGtqmkNemCnup5+UDS5OlUvo8S+dShcQufrU9kgRfIf9bed/Bmky9UpFJvgtxIltja3u4lB6OGw7MLkw9XPJXN7PLkbAzV2XPmRo+9abrXHvF8m3ycAoDx4TJ9APB4wrg5qxcc5J1taANfSwU19DT02x1QwogUx4WNgES37L1cYVEsCMsDdLB4PBVutn+uNza+ZihAWsc/QBuWUQ=
   name: slackdump-0.1.1
   tag_name: 0.1.1
   on:
     repo: deep-compute/slackdump
 - provider: pypi
   distributions: "sdist bdist_wheel"
-  server: https://testpypi.python.org/pypi
-  skip_cleanup: true
-  user: "deepcompute"
+  server: https://upload.pypi.org/legacy/
+  user: deepcompute
   password:
-    secure: 
-  on:
-    branch: master
-    tags: false
-  # pypi
-- provider: pypi
-  distributions: "sdist bdist_wheel"
-  skip_cleanup: true
-  user: "deepcompute"
-  password: 
-    secure: 
-  on:
-    branch: master
-    # only when there is a release it will update pypi
+    secure: "tVU4I8vkWmmj0kDVnHnLhySbN7IdrfbVonlI/oMxgO6qmNJ7U8pC60ViiQDcOPp+QRGZe/H7SaGIWRPU8lmh4PgXjzZUvIH6WUMQoJaefKkn42QvGHOODse9Z5J6z6jvUMw0997fvflnnkYLmEroyNOezKWQ6+RLLABrBDH+zDeI3LOpq0MKaruHHuwzNaOIFTwjA/A1OiOus5nX++Q8ZoeeKwdbHRK2ZrQ8DZ/Qz071IZdaIqc0XJQotxW9IPlFFjluVsMCn6dC9BVH37w+lSuEzBjDzUQkXMOAeegWpr3itIVW85h4SJSJWUoE6D3JOaQZMCvnBtp+MQe/yOuXu2w9/htGurhhljL4QgY/siuv/oU1v5W9J3SefxBCQNq8RfWkMmh8431KQLhOYhPoWdBkdiIZL8SyZ4x1NAaP37Xnbf0PvbgWw3/F4OXk0yUYnb8WdwJArwzSIZXEfAZwfUa39Kz8LLPF1zHqDFFrMCN0PvMu8AhJ1Thl5QC0Qio9LAyPP6JqhhYW8BgtOKVzAxJ/Gml1gQ6QtOdgRe421LWGZuIE4GfO8Va2nofGEYmk4S7puVTEIVODuVCUTsrOezuow9XnZN0Bh0FkO6kPsGRK9ViVJGeEmhsZQNjzN8IwC5KkL95NjaJ0+7ACQJfS8USD88f9EGmHZoPRMlGgaQY="
+ on:
     tags: true
+    branch: master
