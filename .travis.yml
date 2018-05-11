@@ -1,0 +1,54 @@
+language: python
+python:
+- '2.7'
+install:
+- pip install .
+script:
+- echo "No tests"
+before_deploy:
+- wget https://github.com/jgm/pandoc/releases/download/1.19.1/pandoc-1.19.1-1-amd64.deb
+  -O $TRAVIS_BUILD_DIR/pandoc.deb
+- sudo dpkg -i $TRAVIS_BUILD_DIR/pandoc.deb
+- rm $TRAVIS_BUILD_DIR/pandoc.deb
+- pandoc --from=markdown --to=rst --output=$TRAVIS_BUILD_DIR/README.rst README.md
+deploy:
+- provider: releases
+  skip_cleanup: true
+  api_key:
+    secure: 
+  file:
+    - LICENSE
+    - README.md
+    - setup.py
+    - slackdump/slackdump.py
+    - slackdump/slackhistory.py
+    - slackdump/messagestore.py
+    - slackdump/patchedrequests.py
+    - slackdump/__init__.py
+    - slackdump/util.py
+    - slackdump/command.py
+  name: slackdump-0.1.1
+  tag_name: 0.1.1
+  on:
+    repo: deep-compute/slackdump
+- provider: pypi
+  distributions: "sdist bdist_wheel"
+  server: https://testpypi.python.org/pypi
+  skip_cleanup: true
+  user: "deepcompute"
+  password:
+    secure: 
+  on:
+    branch: master
+    tags: false
+  # pypi
+- provider: pypi
+  distributions: "sdist bdist_wheel"
+  skip_cleanup: true
+  user: "deepcompute"
+  password: 
+    secure: 
+  on:
+    branch: master
+    # only when there is a release it will update pypi
+    tags: true
