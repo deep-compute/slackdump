@@ -17,6 +17,7 @@ DUMMY_LOG = Dummy()
 class SlackHistory(object):
     '''
     FIXME: explain the responsbilities of this abstraction
+    This module gives all the history between given timestamps
     '''
 
     CACHE_LEN = 100
