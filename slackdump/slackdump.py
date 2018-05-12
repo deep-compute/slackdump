@@ -11,6 +11,9 @@ DUMMY_LOG = Dummy()
 
 
 class SlackDump(object):
+    '''
+    FIXME: Document the Responsibilities of class
+    '''
     CONNECTION_SLEEP_INTERVAL = 1
     EMPTY_READ_SLEEP_INTERVAL = .1
     CACHE_EXPIRY_TIME = 60
