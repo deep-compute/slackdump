@@ -22,7 +22,6 @@ class SlackCommand(BaseScript):
         targets = []
 
         for t in self.args.target:
-            #import pdb; pdb.set_trace()
             imp_path, args = self._parse_msg_target_arg(t)
             target_class = util.load_object(imp_path)
             target_obj = target_class(**args)
@@ -32,7 +31,6 @@ class SlackCommand(BaseScript):
 
     def run(self):
         targets = self.msg_store()
-        #import pdb;pdb.set_trace()
         s = SlackDump(auth_token=self.args.auth_token,
                       file_path=self.args.image_folder,
                       status_path=self.args.status_path,
