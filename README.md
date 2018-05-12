@@ -1,3 +1,3 @@
 # slackdump
 
-Dump all Slack conversations into a Database (and keep streaming)
+Dump all Slack conversations into a Database(Mongodb or sqlite) and keep streaming
