@@ -1,8 +1,8 @@
 import doctest
 import unittest
 
-from slackdump.slackdump import slackdump
-from slackdump.slackdump import slackhistory
+from slackdump.slackdump import SlackDump
+from slackdump.slackdump import SlackHistory
 
 
 def suitefn():
