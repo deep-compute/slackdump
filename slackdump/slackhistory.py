@@ -144,6 +144,7 @@ class SlackHistory(object):
         return msg
 
     def change_status(self, _id, ts):
+
         if _id + '_oldest' in self.dd.keys() and ts > self.dd[_id + '_oldest']:
             self.dd[_id + '_latest'] = ts
         else:
