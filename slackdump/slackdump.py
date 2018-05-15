@@ -20,7 +20,7 @@ class SlackDump(object):
     CACHE_LEN = 100
 
     def __init__(self, auth_token=None, file_path=None,
-                 store=None, targets=None, status_path='/tmp/', log=DUMMY_LOG):
+                 store=None, targets=None, status_path='/tmp', log=DUMMY_LOG):
         self.file_path = file_path
         self.auth_token = auth_token
         self.log = log
