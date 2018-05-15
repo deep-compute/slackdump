@@ -10,9 +10,11 @@ setup(
         'slacker == 0.9.60',
         'pymongo == 3.6.0',
         'slackclient == 1.1.2',
-        'basescript == 0.2.0',
+        'basescript == 0.2.5',
         'deeputil == 0.2.5',
         'expiringdict == 1.1.4',
+        'diskdict == 0.2.1',
+        'gnsq == 0.4.0',
     ],
     package_dir={'slackdump': 'slackdump'},
     packages=find_packages('.'),
@@ -23,6 +25,7 @@ setup(
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
     ],
+    test_suite='test.suitefn',
     entry_points={
         "console_scripts": [
             "slackdump = slackdump:main",

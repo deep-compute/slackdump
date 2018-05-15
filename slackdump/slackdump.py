@@ -20,7 +20,7 @@ class SlackDump(object):
     CACHE_LEN = 100
 
     def __init__(self, auth_token=None, file_path=None,
-                 store=None, targets=None, status_path='/tmp/', log=DUMMY_LOG):
+                 store=None, targets=None, status_path='/tmp', log=DUMMY_LOG):
         self.file_path = file_path
         self.auth_token = auth_token
         self.log = log
@@ -108,7 +108,6 @@ class SlackDump(object):
         >>> ob.h.get_file= Mock()
         >>> ob.parse_message(AttrDict({'text': '<@123> uploaded a file and wrote a message', 'user': '123', 'channel': 'U1A34FT', 'ts': '123.234'}))
         AttrDict({'permalink': 'http://justadummy.com', 'text': '@name uploaded a file and wrote a message', 'ts': '123.234', 'channel_name': 'general', 'user': '123', 'user_name': 'name', 'channel': 'U1A34FT'})
-        >>> ob.parse_message(AttrDict({'text': '<@123> uploaded a file and wrote a message', 'user': '123', 'channel': 'U1A34FT', 'ts': '123.234'}))
         '''
 
         if 'user' in msg:
