@@ -69,7 +69,6 @@ class SlackHistory(object):
         >>> ob.slack.api_call = Mock(ob.slack.api_call,
         ...     return_value={"error":"No link found"})
         >>> ob.get_permalink(677, 123545)
-
         False
         '''
         link = self.slack.api_call('chat.getPermalink', channel=channel_id,
@@ -122,10 +121,9 @@ class SlackHistory(object):
         >>> ob.get_permalink = Mock(ob.get_permalink, return_value="http://justadummy.com")
         >>> ob.replace_text = Mock(ob.replace_text, return_value="uploaded a file @asdf")
         >>> ob.get_username = Mock(ob.get_username, return_value="justaname")
-        >>> ob.get_key = Mock(ob.get_key, return_value='18a920561dec17877db2a4628c13734e2f63df1d')
         >>> ob.get_file = Mock()
         >>> ob.parse_dict(AttrDict({'channel': 'abcd', 'user': 'U8S2NSX6J', 'text': 'uploaded a file <@123>', 'ts': '1518582605.000239'}))
-        AttrDict({'permalink': 'http://justadummy.com', 'text': 'uploaded a file @asdf', 'ts': '1518582605.000239', 'user': 'U8S2NSX6J', 'key': '18a920561dec17877db2a4628c13734e2f63df1d', 'user_name': 'justaname', 'channel': 'abcd'})
+        AttrDict({'permalink': 'http://justadummy.com', 'text': 'uploaded a file @asdf', 'ts': '1518582605.000239', 'user': 'U8S2NSX6J', 'user_name': 'justaname', 'channel': 'abcd'})
         '''
         p = self.get_permalink(msg.channel, msg.ts)
         if p:
@@ -155,7 +153,7 @@ class SlackHistory(object):
         >>> DiskDict( "/tmp/disk.dict")["U8S2NSX6J_latest"]
         '1518582705.000239'
         '''
-        if _id + 'oldest' in self.dd.keys() and ts > self.dd[_id + 'oldest']:
+        if _id + '_oldest' in self.dd.keys() and ts > self.dd[_id + '_oldest']:
             self.dd[_id + '_latest'] = ts
         else:
             self.dd[_id + '_oldest'] = ts
