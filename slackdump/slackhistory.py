@@ -147,13 +147,13 @@ class SlackHistory(object):
         '''
         >>> ob = SlackHistory()
         >>> ob.change_status("U8S2NSX6J", "1518582605.000239")
-        >>> DiskDict( "/tmp/disk.dict")["U8S2NSX6J_oldest"]
+        >>> d = DiskDict( "/tmp/disk.dict")["U8S2NSX6J_oldest"]
         '1518582605.000239'
         >>> ob.change_status("U8S2NSX6J", "1518582705.000239")
-        >>> DiskDict( "/tmp/disk.dict")["U8S2NSX6J_latest"]
+        >>> d["U8S2NSX6J_latest"]
         '1518582705.000239'
         '''
-        if _id + 'oldest' in self.dd.keys() and ts > self.dd[_id + 'oldest']:
+        if _id + '_oldest' in self.dd.keys() and ts > self.dd[_id + '_oldest']:
             self.dd[_id + '_latest'] = ts
         else:
             self.dd[_id + '_oldest'] = ts
