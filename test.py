@@ -3,11 +3,9 @@ import unittest
 
 from slackdump import slackdump
 
-
 def suitefn():
     suite = unittest.TestSuite()
     suite.addTests(doctest.DocTestSuite(slackdump))
-
     return suite
 
 
