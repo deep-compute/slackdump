@@ -23,6 +23,7 @@ setup(
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
     ],
+    test_suite='test.suitefn',
     entry_points={
         "console_scripts": [
             "slackdump = slackdump:main",

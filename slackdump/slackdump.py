@@ -108,7 +108,6 @@ class SlackDump(object):
         >>> ob.h.get_file= Mock()
         >>> ob.parse_message(AttrDict({'text': '<@123> uploaded a file and wrote a message', 'user': '123', 'channel': 'U1A34FT', 'ts': '123.234'}))
         AttrDict({'permalink': 'http://justadummy.com', 'text': '@name uploaded a file and wrote a message', 'ts': '123.234', 'channel_name': 'general', 'user': '123', 'user_name': 'name', 'channel': 'U1A34FT'})
-        >>> ob.parse_message(AttrDict({'text': '<@123> uploaded a file and wrote a message', 'user': '123', 'channel': 'U1A34FT', 'ts': '123.234'}))
         '''
 
         if 'user' in msg:
