@@ -11,53 +11,65 @@ DUMMY_LOG = Dummy()
 
 
 class SlackDump(object):
-    '''
+    """
     FIXME: Document the Responsibilities of class
-    '''
+    """
+
     CONNECTION_SLEEP_INTERVAL = 1
-    EMPTY_READ_SLEEP_INTERVAL = .1
+    EMPTY_READ_SLEEP_INTERVAL = 0.1
     CACHE_EXPIRY_TIME = 60
     CACHE_LEN = 100
 
-    def __init__(self, auth_token=None, file_path=None,
-                 store=None, targets=None, status_path='/tmp', log=DUMMY_LOG):
+    def __init__(
+        self,
+        auth_token=None,
+        file_path=None,
+        store=None,
+        targets=None,
+        status_path="/tmp",
+        log=DUMMY_LOG,
+    ):
         self.file_path = file_path
         self.auth_token = auth_token
         self.log = log
         self.store = store
         self.targets = targets
         self.status_path = status_path
-        self.h = SlackHistory(auth_token=self.auth_token,
-                              file_path=self.file_path,
-                              dict_path=self.status_path,
-                              targets=self.targets, log=self.log)
+        self.h = SlackHistory(
+            auth_token=self.auth_token,
+            file_path=self.file_path,
+            dict_path=self.status_path,
+            targets=self.targets,
+            log=self.log,
+        )
 
         self.slack = SlackClient(self.auth_token)
-        self.channel_name_cache = ExpiringDict(self.CACHE_LEN,
-                                               self.CACHE_EXPIRY_TIME)
+        self.channel_name_cache = ExpiringDict(self.CACHE_LEN, self.CACHE_EXPIRY_TIME)
 
     def make_connection(self):
-        self.log.debug('In make connection')
+        self.log.debug("In make connection")
         try:
             while not self.slack.rtm_connect():
                 time.sleep(self.CONNECTION_SLEEP_INTERVAL)
             return True
 
         except Exception:
-            self.log.exception('in make_connection')
+            self.log.exception("in make_connection")
             return False
 
     def get_history(self, connect_time):
-        history = SlackHistory(log=self.log,
-                               auth_token=self.auth_token,
-                               file_path=self.file_path,
-                               dict_path=self.status_path,
-                               targets=self.targets,
-                               connect_time=connect_time)
+        history = SlackHistory(
+            log=self.log,
+            auth_token=self.auth_token,
+            file_path=self.file_path,
+            dict_path=self.status_path,
+            targets=self.targets,
+            connect_time=connect_time,
+        )
         history.start()
 
     def get_channelname(self, _id):
-        '''
+        """
         >>> from mock import Mock
         >>> def side_effect(value, channel='qwer'):
         ...     if value == 'channels.info':
@@ -75,30 +87,30 @@ class SlackDump(object):
         'asdf'
         >>> ob.get_channelname('D1234')
         'just'
-        '''
+        """
         name = AttrDict(self.channel_name_cache)
 
         if _id in name:
             return name.id
 
-        if _id.startswith('C'):
+        if _id.startswith("C"):
             info = self.slack.api_call("channels.info", channel=_id)
-            name.id = info['channel']['name']
+            name.id = info["channel"]["name"]
 
-        elif _id.startswith('G'):
+        elif _id.startswith("G"):
             info = self.slack.api_call("groups.info", channel=_id)
-            name.id = info['group']['name']
+            name.id = info["group"]["name"]
 
-        elif _id.startswith('D'):
-            ch_list = self.slack.api_call("im.list")['ims']
+        elif _id.startswith("D"):
+            ch_list = self.slack.api_call("im.list")["ims"]
             for counter in range(len(ch_list)):
-                if ch_list[counter]['id'] == _id:
-                    name.id = self.h.get_username(ch_list[counter]['user'])
+                if ch_list[counter]["id"] == _id:
+                    name.id = self.h.get_username(ch_list[counter]["user"])
 
         return name.id
 
     def parse_message(self, msg):
-        '''
+        """
         >>> from mock import Mock
         >>> ob = SlackDump()
         >>> ob.h.get_username = Mock(ob.h.get_username, return_value='name')
@@ -108,27 +120,27 @@ class SlackDump(object):
         >>> ob.h.get_file= Mock()
         >>> ob.parse_message(AttrDict({'text': '<@123> uploaded a file and wrote a message', 'user': '123', 'channel': 'U1A34FT', 'ts': '123.234'}))
         AttrDict({'permalink': 'http://justadummy.com', 'text': '@name uploaded a file and wrote a message', 'ts': '123.234', 'channel_name': 'general', 'user': '123', 'user_name': 'name', 'channel': 'U1A34FT'})
-        '''
+        """
 
-        if 'user' in msg:
-                msg.user_name = self.h.get_username(msg.user)
+        if "user" in msg:
+            msg.user_name = self.h.get_username(msg.user)
 
-        if 'channel' in msg:
+        if "channel" in msg:
             msg.channel_name = self.get_channelname(msg.channel)
 
-        if 'ts' in msg and 'channel' in msg:
+        if "ts" in msg and "channel" in msg:
             p = self.h.get_permalink(msg.channel, msg.ts)
             if p:
                 msg.permalink = p
 
-        if 'text' in msg and '<@' in msg.text:
+        if "text" in msg and "<@" in msg.text:
             msg.text = self.h.replace_text(msg.text)
             if self.file_path is not None and "uploaded a file:" in msg.text:
-                filename = msg.ts + "_" + msg.file['name'].replace(' ', '_')
+                filename = msg.ts + "_" + msg.file["name"].replace(" ", "_")
                 self.h.get_file(msg.file.url_private_download, filename)
 
-        if 'subtype' in msg:
-            if msg.subtype == 'message_changed':
+        if "subtype" in msg:
+            if msg.subtype == "message_changed":
                 msg.message.text = self.h.replace_text(msg.message.text)
                 msg.user_name = self.h.get_username(msg.message.user)
 
@@ -152,8 +164,9 @@ class SlackDump(object):
             self.h._write_messages(dict(msg))
 
     def log_exception(self, __fn__):
-        self.log.exception('error_in_rtm', fn=__fn__.func_name,
-                           tb=repr(traceback.format_exc()))
+        self.log.exception(
+            "error_in_rtm", fn=__fn__.func_name, tb=repr(traceback.format_exc())
+        )
 
     @keeprunning(wait_secs=1, on_error=log_exception)
     def start(self):

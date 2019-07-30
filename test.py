@@ -4,6 +4,7 @@ import unittest
 from slackdump import slackdump
 from slackdump import slackhistory
 
+
 def suitefn():
     suite = unittest.TestSuite()
     suite.addTests(doctest.DocTestSuite(slackdump))
